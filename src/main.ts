@@ -19,6 +19,6 @@ async function bootstrap() {
   const document = parseYAML(file);
   SwaggerModule.setup('/api', app, document);
 
-  await app.listen(4000, () => console.log(`Server started on port = ${PORT}`));
+  await app.listen(PORT, () => console.log(`Server started on port = ${PORT}`));
 }
 bootstrap();
