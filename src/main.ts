@@ -19,6 +19,10 @@ async function bootstrap() {
   const document = parseYAML(file);
   SwaggerModule.setup('/api', app, document);
 
-  await app.listen(PORT, () => console.log(`Server started on port = ${PORT}`));
+  await app.listen(PORT, () =>
+    console.log(
+      `\nServer started on port = ${PORT}. Swagger hosted on: \x1b[34mhttp://localhost:${PORT}/api/\x1b[0m`,
+    ),
+  );
 }
 bootstrap();
