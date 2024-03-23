@@ -1,9 +1,7 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
     container_name: nodejs2024Q1-service
+    image: vonubat/nodejs2024q1-service-app:latest
     environment:
       - PORT=${PORT}
     ports:
