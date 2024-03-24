@@ -20,8 +20,10 @@ export class FavsService {
     private readonly trackService: TrackService,
   ) {}
 
-  findAll(): FavoritesResponse {
-    const artists = this.artistService.findMany(this.favsRepository.artists);
+  async findAll(): Promise<FavoritesResponse> {
+    const artists = await this.artistService.findMany(
+      this.favsRepository.artists,
+    );
     const albums = this.albumService.findMany(this.favsRepository.albums);
     const tracks = this.trackService.findMany(this.favsRepository.tracks);
 
