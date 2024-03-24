@@ -34,16 +34,16 @@ export class ArtistService {
     return artists;
   }
 
-  async findOne(id: string, status = HttpStatus.NOT_FOUND): Promise<Artist> {
+  async findOne(id: string): Promise<Artist> {
     const artist = await this.artistRepository.findOne({ where: { id } });
 
     if (!artist) {
       throw new HttpException(
         {
-          status,
+          status: HttpStatus.NOT_FOUND,
           error: `Artist with such id = ${id} does not exist`,
         },
-        status,
+        HttpStatus.NOT_FOUND,
       );
     }
 
@@ -53,6 +53,57 @@ export class ArtistService {
   async findMany(ids: string[]): Promise<Artist[]> {
     const artists = await this.artistRepository.findBy({ id: In(ids) });
     return artists;
+  }
+
+  async getFavorites(): Promise<Artist[]> {
+    const artists = await this.artistRepository.find({
+      where: { isFavorite: true },
+    });
+    return artists;
+  }
+
+  async setFavorite(artistId: string, action: 'add' | 'remove'): Promise<void> {
+    switch (action) {
+      case 'remove': {
+        const artist = await this.artistRepository.findOne({
+          where: { id: artistId, isFavorite: true },
+        });
+
+        if (!artist) {
+          throw new HttpException(
+            {
+              status: HttpStatus.NOT_FOUND,
+              error: `Artist with such artistId = ${artistId} does not exist in the favourites`,
+            },
+            HttpStatus.NOT_FOUND,
+          );
+        }
+
+        artist.isFavorite = false;
+        await this.artistRepository.save(artist);
+        break;
+      }
+
+      default: {
+        const artist = await this.artistRepository.findOne({
+          where: { id: artistId },
+        });
+
+        if (!artist) {
+          throw new HttpException(
+            {
+              status: HttpStatus.UNPROCESSABLE_ENTITY,
+              error: `Artist with such artistId = ${artistId} does not exist`,
+            },
+            HttpStatus.UNPROCESSABLE_ENTITY,
+          );
+        }
+
+        artist.isFavorite = true;
+        await this.artistRepository.save(artist);
+        break;
+      }
+    }
   }
 
   async update(id: string, dto: UpdateArtistDto): Promise<Artist> {
@@ -71,7 +122,7 @@ export class ArtistService {
     const artist = await this.findOne(id);
     await this.artistRepository.delete({ id: artist.id });
 
-    this.trackService.invalidateArtist(id);
-    this.albumService.invalidateArtist(id);
+    await this.trackService.invalidateArtist(id);
+    await this.albumService.invalidateArtist(id);
   }
 }

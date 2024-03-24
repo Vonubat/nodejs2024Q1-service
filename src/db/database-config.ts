@@ -2,6 +2,8 @@ import { ConfigModule } from '@nestjs/config';
 import { DataSourceOptions } from 'typeorm';
 import { User } from '../user/entities/user.entity';
 import { Artist } from '../artist/entities/artist.entity';
+import { Album } from '../album/entities/album.entity';
+import { Track } from '../track/entities/track.entity';
 
 import 'dotenv/config';
 
@@ -31,6 +33,6 @@ export const databaseConfig: DataSourceOptions = {
   password,
   database,
   url,
-  entities: [User, Artist],
+  entities: [User, Artist, Album, Track],
   synchronize: true,
 };

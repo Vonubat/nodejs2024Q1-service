@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
@@ -6,12 +7,16 @@ export class Artist extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string; // uuid v4
 
+  @Column()
   @IsNotEmpty()
   @IsString()
-  @Column()
   name: string;
 
-  @IsBoolean()
   @Column()
+  @IsBoolean()
   grammy: boolean;
+
+  @Exclude()
+  @Column({ default: false })
+  isFavorite: boolean;
 }
