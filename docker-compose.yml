@@ -1,16 +1,19 @@
 services:
-  app:
-    container_name: nodejs2024Q1-service
-    image: vonubat/nodejs2024q1-service-app:latest
-    environment:
-      - PORT=${PORT}
-    ports:
-      - '${PORT}:${PORT}'
-    depends_on:
-      - db
-    volumes:
-      - ./src:/home/node/src
-    restart: on-failure
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: nodejs2024Q1-service
+  # image: vonubat/nodejs2024q1-service-app:latest
+  # environment:
+  #   - PORT=${PORT}
+  # ports:
+  #   - '${PORT}:${PORT}'
+  # depends_on:
+  #   - db
+  # volumes:
+  #   - ./src:/home/node/src
+  # restart: on-failure
 
   db:
     container_name: postgres_container

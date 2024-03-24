@@ -1,20 +1,35 @@
 import { Exclude } from 'class-transformer';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  ValueTransformer,
+} from 'typeorm';
 
-export class User {
+const bigint: ValueTransformer = {
+  to: (entityValue: number) => entityValue.toString(),
+  from: (databaseValue: string): number => parseInt(databaseValue, 10),
+};
+
+@Entity()
+export class User extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid')
   id: string; // uuid v4
 
-  login: string;
+  @Column()
+  login!: string;
 
+  @Column()
   @Exclude()
-  password: string;
+  password!: string;
 
-  version: number; // integer number, increments on update
+  @Column()
+  version!: number; // integer number, increments on update
 
-  createdAt: number; // timestamp of creation
+  @Column({ type: 'bigint', transformer: bigint })
+  createdAt!: number; // timestamp of creation
 
-  updatedAt: number; // timestamp of last update
-
-  constructor(partial: Partial<User>) {
-    Object.assign(this, partial);
-  }
+  @Column({ type: 'bigint', transformer: bigint })
+  updatedAt!: number; // timestamp of last update
 }

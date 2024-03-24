@@ -6,7 +6,7 @@ WORKDIR /home/node
 
 COPY --chown=node:node package*.json ./
 
-RUN npm i --legacy-peer-deps && npm cache clean --force
+RUN npm i --force && npm cache clean --force
 
 COPY --chown=node:node . .
 
