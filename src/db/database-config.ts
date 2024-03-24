@@ -4,6 +4,7 @@ import { User } from '../user/entities/user.entity';
 import { Artist } from '../artist/entities/artist.entity';
 import { Album } from '../album/entities/album.entity';
 import { Track } from '../track/entities/track.entity';
+import { Migration1711301298546 } from './migrations/1711301298546-Migration';
 
 import 'dotenv/config';
 
@@ -34,5 +35,8 @@ export const databaseConfig: DataSourceOptions = {
   database,
   url,
   entities: [User, Artist, Album, Track],
-  synchronize: true,
+  migrations: [Migration1711301298546],
+  synchronize: false,
+  logging: true,
+  migrationsRun: true,
 };
