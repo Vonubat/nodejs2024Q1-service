@@ -1,19 +1,23 @@
 services:
-  # app:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   container_name: nodejs2024Q1-service
-  # image: vonubat/nodejs2024q1-service-app:latest
-  # environment:
-  #   - PORT=${PORT}
-  # ports:
-  #   - '${PORT}:${PORT}'
-  # depends_on:
-  #   - db
-  # volumes:
-  #   - ./src:/home/node/src
-  # restart: on-failure
+  app:
+    #### Local image ####
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    # container_name: nodejs2024Q1-service
+    #### Remote image ####
+    image: vonubat/nodejs2024q1-service-app:latest
+    environment:
+      - PORT=${PORT}
+    ports:
+      - '${PORT}:${PORT}'
+    depends_on:
+      - db
+    volumes:
+      - ./src:/home/node/src
+    restart: on-failure
+    networks:
+      - home-library
 
   db:
     container_name: postgres_container
@@ -23,11 +27,17 @@ services:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - TZ=GMT+3
-      - PGTZ=GMT+3
+      - TZ=${TZ}
+      - PGTZ=${PGTZ}
       - PGDATA=/var/lib/postgresql/data/pgdata
     ports:
       - '${DB_PORT}:5432'
     volumes:
       - /var/lib/postgresql/data/pgdata
     restart: always
+    networks:
+      - home-library
+
+networks:
+  home-library:
+    driver: bridge
