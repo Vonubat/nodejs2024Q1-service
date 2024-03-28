@@ -10,10 +10,19 @@ import 'dotenv/config';
 
 ConfigModule.forRoot();
 
-const { DB_HOST, DB_HOST_DOCKER, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } =
-  process.env;
+const {
+  DB_HOST,
+  DB_HOST_DOCKER,
+  DB_PORT,
+  DB_USER,
+  DB_PASSWORD,
+  DB_NAME,
+  WORK_MODE,
+} = process.env;
 
-const url = `postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST_DOCKER}:${DB_PORT}/${DB_NAME}`;
+const url = `postgresql://${DB_USER}:${DB_PASSWORD}@${
+  WORK_MODE === 'local' ? DB_HOST : DB_HOST_DOCKER
+}:${DB_PORT}/${DB_NAME}`;
 
 console.log('DB_HOST:', DB_HOST);
 console.log('DB_HOST_DOCKER:', DB_HOST_DOCKER);
