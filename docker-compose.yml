@@ -29,11 +29,11 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - TZ=${TZ}
       - PGTZ=${PGTZ}
-      - PGDATA=/var/lib/postgresql/data/pgdata
+      - PGDATA=/tmp
     ports:
       - '${DB_PORT}:5432'
     volumes:
-      - /var/lib/postgresql/data/pgdata
+      - /var/lib/postgresql/data
     restart: always
     networks:
       - home-library
