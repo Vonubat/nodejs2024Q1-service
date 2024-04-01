@@ -43,6 +43,6 @@ export const databaseConfig: DataSourceOptions = {
   entities: [User, Artist, Album, Track],
   migrations: [Migration1711301298546],
   synchronize: false,
-  logging: true,
+  // logging: true,
   migrationsRun: true,
 };
